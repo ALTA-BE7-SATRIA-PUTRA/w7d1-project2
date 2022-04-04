@@ -3,8 +3,10 @@ package user
 import (
 	"net/http"
 	"project2/delivery/helper"
+	_middlewares "project2/delivery/middlewares"
 	_entities "project2/entities"
 	_userUseCase "project2/usecase/user"
+
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -78,6 +80,14 @@ func (uh *UserHandler) DeleteUserHandler() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, "The expected param must be int")
 		}
 
+		idToken, errToken := _middlewares.ExtractToken(c)
+		if errToken != nil { // jika tidak ada token atau token tidak sesuai
+			return c.JSON(http.StatusUnauthorized, helper.ResponseFailed("unauthorized"))
+		}
+		if idToken != id { // jika idToken tidak sama dengan id param
+			return c.JSON(http.StatusUnauthorized, helper.ResponseFailed("unauthorized or different users"))
+		}
+
 		users, rows, err := uh.userUseCase.DeleteUser(id)
 		if rows == 0 {
 			return c.JSON(http.StatusBadRequest, helper.ResponseFailed("data not found"))
@@ -99,6 +109,14 @@ func (uh *UserHandler) PutUserHandler() echo.HandlerFunc {
 		id, errorconv := strconv.Atoi(idStr)
 		if errorconv != nil {
 			return c.JSON(http.StatusBadRequest, "The expected param must be int")
+		}
+
+		idToken, errToken := _middlewares.ExtractToken(c)
+		if errToken != nil { // jika tidak ada token atau token tidak sesuai
+			return c.JSON(http.StatusUnauthorized, helper.ResponseFailed("unauthorized"))
+		}
+		if idToken != id { // jika idToken tidak sama dengan id param
+			return c.JSON(http.StatusUnauthorized, helper.ResponseFailed("unauthorized or different users"))
 		}
 
 		c.Bind(&updateUser)
