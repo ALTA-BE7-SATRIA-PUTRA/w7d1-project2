@@ -1,15 +1,15 @@
 package project
 
 import (
-	_userRepository "project2/repository/user"
+	_projectRepository "project2/repository/project"
 )
 
-type UserUseCase struct {
-	userRepository _userRepository.UserRepositoryInterface
+type ProjectUseCase struct {
+	projectRepository _projectRepository.ProjectRepositoryInterface
 }
 
-func NewUserUseCase(userRepo _userRepository.UserRepositoryInterface) UserUseCaseInterface {
-	return &UserUseCase{
-		userRepository: userRepo,
+func NewProjectUseCase(projectRepo _projectRepository.ProjectRepositoryInterface) ProjectUseCaseInterface {
+	return &ProjectUseCase{
+		projectRepository: projectRepo,
 	}
 }
