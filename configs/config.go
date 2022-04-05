@@ -39,7 +39,7 @@ func initConfig() *AppConfig {
 	defaultConfig.Port = 8000
 	defaultConfig.SecretJWT = "S3CR3T"
 	defaultConfig.Database.Driver = "mysql"
-	defaultConfig.Database.Name = "todo_list"
+	defaultConfig.Database.Name = "todo-list"
 	defaultConfig.Database.Address = "localhost"
 	defaultConfig.Database.Port = 3306
 	defaultConfig.Database.Username = "root"

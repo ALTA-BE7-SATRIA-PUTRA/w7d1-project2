@@ -24,6 +24,7 @@ func (ph *ProjectHandler) PostProjectHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var project _entities.Project
 		tx := c.Bind(&project)
+
 		projects, _ := ph.projectUseCase.GetAll()
 		for _, val := range projects {
 			if val.Project == project.Project {
@@ -54,25 +55,17 @@ func (ph *ProjectHandler) GetAllHandler() echo.HandlerFunc {
 
 func (ph *ProjectHandler) PutProjectHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		id, errToken := _middlewares.ExtractToken(c)
+		idToken, errToken := _middlewares.ExtractToken(c)
 		if errToken != nil {
 			return c.JSON(http.StatusUnauthorized, helper.ResponseFailed("unauthorized"))
 		}
 		var project _entities.Project
 		var updateProject _entities.Project
 
-		// idStr := c.Param("id")
-		// id, errorconv := strconv.Atoi(idStr)
-
-		// if errorconv != nil {
-		// 	return c.JSON(http.StatusBadRequest, "The expected param must be int")
-		// }
-		// fmt.Println(project)
-		// if idToken != int(project.IdUser) {
-		// 	return c.JSON(http.StatusUnauthorized, helper.ResponseFailed("unauthorized or"))
-		// }
-
 		c.Bind(&updateProject)
+		if updateProject.IdUser == 0 {
+			project.IdUser = uint(idToken)
+		}
 		if updateProject.Project != "" {
 			project.Project = updateProject.Project
 		}
@@ -81,7 +74,7 @@ func (ph *ProjectHandler) PutProjectHandler() echo.HandlerFunc {
 			project.Description = updateProject.Description
 		}
 
-		project, _, err := ph.projectUseCase.PutProject(id, project)
+		project, _, err := ph.projectUseCase.PutProject(idToken, project)
 
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, helper.ResponseFailed("error to update project"))
