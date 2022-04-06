@@ -1,10 +1,8 @@
 package configs
 
 import (
+	"os"
 	"sync"
-
-	"github.com/labstack/gommon/log"
-	"github.com/spf13/viper"
 )
 
 type AppConfig struct {
@@ -36,28 +34,14 @@ func GetConfig() *AppConfig {
 
 func initConfig() *AppConfig {
 	var defaultConfig AppConfig
-	defaultConfig.Port = 8000
-	defaultConfig.SecretJWT = "S3CR3T"
-	defaultConfig.Database.Driver = "mysql"
-	defaultConfig.Database.Name = "todo_list"
-	defaultConfig.Database.Address = "localhost"
-	defaultConfig.Database.Port = 3306
-	defaultConfig.Database.Username = "root"
-	defaultConfig.Database.Password = ""
+	defaultConfig.Port = os.Getenv("APP_PORT")
+	defaultConfig.SecretJWT = os.Getenv("JWT_SECRET")
+	defaultConfig.Database.Driver = os.Getenv("DB_DRIVER")
+	defaultConfig.Database.Name = os.Getenv("DB_NAME")
+	defaultConfig.Database.Address = os.Getenv("DB_ADDRESS")
+	defaultConfig.Database.Port = os.Getenv("DB_PORT")
+	defaultConfig.Database.Username = os.Getenv("DB_USERNAME")
+	defaultConfig.Database.Password = os.Getenv("DB_PASSWORD")
 
-	viper.SetConfigType("yaml")
-	viper.SetConfigName("config")
-	viper.AddConfigPath("./configs/")
-	if err := viper.ReadInConfig(); err != nil {
-		log.Info("failed to open file")
-		return &defaultConfig
-	}
-
-	var finalConfig AppConfig
-	err := viper.Unmarshal(&finalConfig)
-	if err != nil {
-		log.Info("failed to extract external config, use default value")
-		return &defaultConfig
-	}
-	return &finalConfig
+	return &defaultConfig
 }
