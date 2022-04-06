@@ -44,4 +44,5 @@ func initConfig() *AppConfig {
 	defaultConfig.Database.Password = os.Getenv("DB_PASSWORD")
 
 	return &defaultConfig
+
 }

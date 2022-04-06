@@ -37,7 +37,8 @@ func (pr *ProjectRepository) GetAll() ([]_entities.Project, error) {
 }
 
 func (ur *ProjectRepository) PutProject(project _entities.Project, idToken int) (_entities.Project, error) {
-
+	fmt.Println("ini adalah ", project.IdUser)
+	fmt.Println("ini adalah ", idToken)
 	if project.IdUser != uint(idToken) {
 		return _entities.Project{}, fmt.Errorf("not autorized")
 	}
