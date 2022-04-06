@@ -11,7 +11,7 @@ import (
 )
 
 func RegisterAuthPath(e *echo.Echo, ah *_authHandler.AuthHandler) {
-	e.POST("/auth", ah.LoginHandler())
+	e.POST("/login", ah.LoginHandler())
 }
 func RegisterPath(e *echo.Echo, uh *_userHandler.UserHandler, ph *_projectHandler.ProjectHandler, th *_taskHandler.TaskHandler) {
 	e.POST("/users", uh.PostUserHandler())
