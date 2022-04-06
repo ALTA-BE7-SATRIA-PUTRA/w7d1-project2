@@ -6,13 +6,13 @@ import (
 )
 
 type AppConfig struct {
-	Port      int    `yaml:"port"`
+	Port      string `yaml:"port"`
 	SecretJWT string `yaml:"secretjwt"`
 	Database  struct {
 		Driver   string `yaml:"driver"`
 		Name     string `yaml:"name"`
 		Address  string `yaml:"address"`
-		Port     int    `yaml:"port"`
+		Port     string `yaml:"port"`
 		Username string `yaml:"username"`
 		Password string `yaml:"password"`
 	}

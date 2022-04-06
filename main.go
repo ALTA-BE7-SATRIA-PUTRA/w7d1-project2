@@ -48,7 +48,7 @@ func main() {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(_middlewares.CustomLogger())
 	_routes.RegisterAuthPath(e, authHandler)
-	_routes.RegisterPath(e, userHandler, projectHandler)
+	_routes.RegisterPath(e, userHandler, projectHandler, taskHandler)
 	log.Fatal(e.Start(fmt.Sprintf(":%v", config.Port)))
 
 }
