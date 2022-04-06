@@ -19,7 +19,7 @@ jobs:
         script: |
           cd /root/home/w7d1-project2
           git pull origin main
-          docker stop project1cont
-          docker rm project1cont
+          docker stop project2cont
+          docker rm project2cont
           docker build -t project2server:latest .
           docker run -d -p 8000:8000 -e APP_PORT="8000" -e DB_PORT="3306" -e DB_DRIVER="mysql" -e DB_NAME="todo_list" -e DB_ADDRESS="${{ secrets.DBHOST }}" -e DB_USERNAME="${{ secrets.DBUSERNAME }}" -e DB_PASSWORD="${{ secrets.DBPASSWORD }}" --name project2cont project2server:latest
